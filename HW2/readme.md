@@ -8,14 +8,51 @@
 - **VirtualBox**- среда виртуализации, позволяет создавать и выполнять виртуальные машины;
 - **Vagrant**- ПО для создания и конфигурирования виртуальной среды. В данном случае в качестве среды виртуализации используется VirtualBox;
 - **Github**- система контроля версий
+- **VSCode**- Удобрый редактор кода, со множеством полезных функций;
 - Все действия выполнялись под **Ubuntu 18.04.3**
 
 ## **2. Ход выполнения задания**
-Копируем репозиторий тестового стенда
+Копируем репозиторий тестового стенда на локальную машину;
 
 `git clone git@github.com:erlong15/otus-linux`
 
+Открываем Vagrantfile и добавляем в него диски;
 
+`code Vagrantfile`
+
+```sh
+:sata5 => {
+        :dfile => './sata5.vdi',
+        :size => 250, # Megabytes
+        :port => 5
+},
+:sata6 => {
+        :dfile => './sata6.vdi',
+        :size => 250, # Megabytes
+        :port => 6
+},
+```
+Посмотрим, какие имена присвоены дискам;
+
+`sudo lshw -short | grep disk`
+
+Обнулим суперблоки;
+
+`[vagrant@otuslinux ~]$ sudo mdadm --zero-superblock --force /dev/sd{b,c,d,e,f,g}`
+
+Создадим RAID10 c 6 дисками и проверим его работоспособность;
+
+```
+[vagrant@otuslinux ~]$ sudo  mdadm --create --verbose /dev/md0 -l 10 -n 6 /dev/sd{b,c,d,e,f,g}
+[vagrant@otuslinux ~]$ sudo cat /proc/mdstat  
+Personalities : [raid10]  
+md0 : active raid10 sdg[5] sdf[4] sde[3] sdd[2] sdc[1] sdb[0]
+      761856 blocks super 1.2 512K chunks 2 near-copies [6/6] [UUUUUU]
+```
+
+
+
+                
 ### **Установка ПО**
 
 **V **
