@@ -13,7 +13,7 @@
 ## **2. Ход выполнения задания**
 Копируем репозиторий тестового стенда
 
-'git clone git@github.com:erlong15/otus-linux'
+`git clone git@github.com:erlong15/otus-linux`
 
 
 ### **Установка ПО**
