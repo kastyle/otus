@@ -8,7 +8,7 @@
 - **VirtualBox**- среда виртуализации, позволяет создавать и выполнять виртуальные машины;
 - **Vagrant**- ПО для создания и конфигурирования виртуальной среды. В данном случае в качестве среды виртуализации используется VirtualBox;
 - **Github**- система контроля версий
-- **VSCode**- Удобрый редактор кода, со множеством полезных функций;
+- **VSCode**- Удобный редактор кода, со множеством полезных функций;
 - Все действия выполнялись под **Ubuntu 18.04.3**
 
 ## **2. Ход выполнения задания**
@@ -51,7 +51,7 @@ md0 : active raid10 sdg[5] sdf[4] sde[3] sdd[2] sdc[1] sdb[0]
 ```
 ### **Создание mdadm.conf**
 
-Данный конфиг подволяет рейду не сломаться лишний раз при тех или иных условиях. Создадим его.
+Данный конфиг позволяет рейду не сломаться лишний раз при тех или иных условиях. Создадим его.
 ```
 sudo mkdir /etc/mdadm
 echo "DEVICE partitions" | sudo tee -a  /etc/mdadm/mdadm.conf
@@ -82,7 +82,7 @@ md0 : active raid10 sdd[6] sdg[5] sdf[4] sde[3] sdc[1] sdb[0]
 
 
 ### **Работа с ФС**
-Создадим раздел GPT, партиции,
+Создадим раздел GPT, партиции и примонтируем их.
 ```
 [vagrant@otuslinux ~]$ sudo  parted -s /dev/md0 mklabel gpt
 sudo parted /dev/md0 mkpart primary ext4 0% 20%
@@ -90,13 +90,68 @@ sudo parted /dev/md0 mkpart primary ext4 20% 40%
 sudo parted /dev/md0 mkpart primary ext4 40% 60%
 sudo parted /dev/md0 mkpart primary ext4 60% 80%
 sudo parted /dev/md0 mkpart primary ext4 80% 100%
+sudo mkfs.ext4 /dev/md0p1
+sudo mkfs.ext4 /dev/md0p2
+sudo mkfs.ext4 /dev/md0p3
+sudo mkfs.ext4 /dev/md0p4
+sudo mkfs.ext4 /dev/md0p5
+sudo mount /dev/md0p1 /raid/part1/
+sudo mount /dev/md0p2 /raid/part2/
+sudo mount /dev/md0p3 /raid/part3/
+sudo mount /dev/md0p4 /raid/part4/
+sudo mount /dev/md0p5 /raid/part5/
+```
+Вывод команды lsblk
+
+```
+[vagrant@otuslinux ~]$ lsblk 
+NAME      MAJ:MIN RM   SIZE RO TYPE   MOUNTPOINT
+sda         8:0    0    40G  0 disk   
+`-sda1      8:1    0    40G  0 part   /
+sdb         8:16   0   250M  0 disk   
+`-md0       9:0    0   744M  0 raid10 
+  |-md0p1 259:0    0   147M  0 md     /raid/part1
+  |-md0p2 259:1    0 148.5M  0 md     /raid/part2
+  |-md0p3 259:2    0   150M  0 md     /raid/part3
+  |-md0p4 259:3    0 148.5M  0 md     /raid/part4
+  `-md0p5 259:4    0   147M  0 md     /raid/part5
+sdc         8:32   0   250M  0 disk   
+`-md0       9:0    0   744M  0 raid10 
+  |-md0p1 259:0    0   147M  0 md     /raid/part1
+  |-md0p2 259:1    0 148.5M  0 md     /raid/part2
+  |-md0p3 259:2    0   150M  0 md     /raid/part3
+  |-md0p4 259:3    0 148.5M  0 md     /raid/part4
+  `-md0p5 259:4    0   147M  0 md     /raid/part5
+sdd         8:48   0   250M  0 disk   
+`-md0       9:0    0   744M  0 raid10 
+  |-md0p1 259:0    0   147M  0 md     /raid/part1
+  |-md0p2 259:1    0 148.5M  0 md     /raid/part2
+  |-md0p3 259:2    0   150M  0 md     /raid/part3
+  |-md0p4 259:3    0 148.5M  0 md     /raid/part4
+  `-md0p5 259:4    0   147M  0 md     /raid/part5
+sde         8:64   0   250M  0 disk   
+`-md0       9:0    0   744M  0 raid10 
+  |-md0p1 259:0    0   147M  0 md     /raid/part1
+  |-md0p2 259:1    0 148.5M  0 md     /raid/part2
+  |-md0p3 259:2    0   150M  0 md     /raid/part3
+  |-md0p4 259:3    0 148.5M  0 md     /raid/part4
+  `-md0p5 259:4    0   147M  0 md     /raid/part5
+sdf         8:80   0   250M  0 disk   
+`-md0       9:0    0   744M  0 raid10 
+  |-md0p1 259:0    0   147M  0 md     /raid/part1
+  |-md0p2 259:1    0 148.5M  0 md     /raid/part2
+  |-md0p3 259:2    0   150M  0 md     /raid/part3
+  |-md0p4 259:3    0 148.5M  0 md     /raid/part4
+  `-md0p5 259:4    0   147M  0 md     /raid/part5
+sdg         8:96   0   250M  0 disk   
+`-md0       9:0    0   744M  0 raid10 
+  |-md0p1 259:0    0   147M  0 md     /raid/part1
+  |-md0p2 259:1    0 148.5M  0 md     /raid/part2
+  |-md0p3 259:2    0   150M  0 md     /raid/part3
+  |-md0p4 259:3    0 148.5M  0 md     /raid/part4
+  `-md0p5 259:4    0   147M  0 md     /raid/part5
 
 ```
 
-### ** **
-
-
 ## **Вывод**
-
-
-
+В ходе работы изменили Vagrantfile, создали скрипт для создания рейда, конфиг для автосборки рейда при загрузке. Так же  добавили в Vagrantfile дополнительно 2 диска, сломали и починили raid, собрали **RAID10**, создали GPT раздел и 5 партиций.
