@@ -79,8 +79,6 @@ md0 : active raid10 sdd[6] sdg[5] sdf[4] sde[3] sdc[1] sdb[0]
 ```
 Все получилось.
 
-
-
 ### **Работа с ФС**
 Создадим раздел GPT, партиции и примонтируем их.
 ```
@@ -95,6 +93,7 @@ sudo mkfs.ext4 /dev/md0p2
 sudo mkfs.ext4 /dev/md0p3
 sudo mkfs.ext4 /dev/md0p4
 sudo mkfs.ext4 /dev/md0p5
+sudo mkdir -p /raid/part{1,2,3,4,5}
 sudo mount /dev/md0p1 /raid/part1/
 sudo mount /dev/md0p2 /raid/part2/
 sudo mount /dev/md0p3 /raid/part3/
