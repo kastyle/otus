@@ -49,24 +49,49 @@ Personalities : [raid10]
 md0 : active raid10 sdg[5] sdf[4] sde[3] sdd[2] sdc[1] sdb[0]
       761856 blocks super 1.2 512K chunks 2 near-copies [6/6] [UUUUUU]
 ```
+### **Создание mdadm.conf**
+
+Данный конфиг подволяет рейду не сломаться лишний раз при тех или иных условиях. Создадим его.
+```
+sudo mkdir /etc/mdadm
+echo "DEVICE partitions" | sudo tee -a  /etc/mdadm/mdadm.conf
+sudo mdadm --detail --scan --verbose | awk '/ARRAY/ {print}' | sudo tee -a /etc/mdadm/mdadm.conf
+```
+
+### **Работа с RAID массивом**
+
+Согласно заданию, требуется имитировать выход из строя диска, и затем, восстановить полную работоспособность массива. Ломать - не стоить, дак чего же мы ждем? :))
+```
+[vagrant@otuslinux ~]$ mdadm /dev/md0 --fail /dev/sdd
+[vagrant@otuslinux ~]$ cat /proc/mdstat 
+Personalities : [raid10] 
+md0 : active raid10 sdg[5] sdf[4] sde[3] sdd[2](F) sdc[1] sdb[0]
+      761856 blocks super 1.2 512K chunks 2 near-copies [6/5] [UU_UUU]
+```
+Теперь восстановим его массив.
+```
+[vagrant@otuslinux ~]$ sudo mdadm /dev/md0 --remove /dev/sdd
+[vagrant@otuslinux ~]$ sudo mdadm /dev/md0 --add /dev/sdd
+[vagrant@otuslinux ~]$ cat /proc/mdstat 
+Personalities : [raid10] 
+md0 : active raid10 sdd[6] sdg[5] sdf[4] sde[3] sdc[1] sdb[0]
+      761856 blocks super 1.2 512K chunks 2 near-copies [6/6] [UUUUUU]
+```
+Все получилось.
 
 
 
-                
-### **Установка ПО**
+### **Работа с ФС**
+Создадим раздел GPT, партиции,
+```
+[vagrant@otuslinux ~]$ sudo  parted -s /dev/md0 mklabel gpt
+sudo parted /dev/md0 mkpart primary ext4 0% 20%
+sudo parted /dev/md0 mkpart primary ext4 20% 40%
+sudo parted /dev/md0 mkpart primary ext4 40% 60%
+sudo parted /dev/md0 mkpart primary ext4 60% 80%
+sudo parted /dev/md0 mkpart primary ext4 80% 100%
 
-**V **
-
-** **
-
-
-** **
-
-
-### ** **
-
-
-### ** **
+```
 
 ### ** **
 
