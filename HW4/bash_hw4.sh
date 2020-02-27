@@ -52,10 +52,10 @@ if  [ "$newlog" = "$oldlog" ]
 
     rm -f "$lock"
     trap - INT TERM EXIT
+    cat mail.log | mail -s "Log statistics" admin@admin.com
     else
     echo "Failed to acquire lockfile: $lock."
     echo "Held by $(cat $lock)"
-
-    cat mail.log | mail -s "Log statistics" admin@admin.com
+    
    fi
 fi
