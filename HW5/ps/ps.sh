@@ -15,13 +15,11 @@ fnc (){
 
         hz=$(getconf CLK_TCK)
         utime=$(cat /proc/$numpid/stat | awk '{print $14}')
-	    stime=$(cat /proc/$numpid/stat | awk '{print $15}')
-
-	    time=$((($utime+$stime)/$hz))
+	stime=$(cat /proc/$numpid/stat | awk '{print $15}')
+	time=$((($utime+$stime)/$hz))
         
         printf "%s\t%s\t%s\t%s\t%s\n" $pid $tty $stat $time $cmd
         
-
     done
 }
 printf "PID\tTTY\tSTAT\tTIME\tCOMMAND\n"
