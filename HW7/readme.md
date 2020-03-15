@@ -129,7 +129,6 @@ chmod -R u=rwx,go-rwx /home/jira/jirasoftware-home
 ```
 touch /lib/systemd/system/jira.service
 chmod 664 /lib/systemd/system/jira.service
-
 ```
 Создаем для юнит и ограничения для него, назначаем авторестарт.
 ```
@@ -158,3 +157,6 @@ systemctl enable jira.service
 systemctl start jira.service
 systemctl status jira.service
 ```
+## **5. Для проверки нужно...**
+...скопировать Vagrantfile и script.sh в один каталог и выполнить vagrant up.
+Все результаты будут выведены на экран.
