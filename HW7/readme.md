@@ -103,7 +103,7 @@ cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/second.conf
 sed -i 's:Listen 80:Listen 8080:' /etc/httpd/conf/second.conf
 echo PidFile /var/run/httpd-second.pid >> /etc/httpd/conf/second.conf
 ```
-Проверяем статус сервисов, результат [можно посмотреть в логе (https://github.com/kastyle/otus/blob/master/HW7/logs/httpd.log)
+Проверяем статус сервисов, результат [можно посмотреть в логе](https://github.com/kastyle/otus/blob/master/HW7/logs/httpd.log)
 
 ## **4. Создаем unit файл для jira с ограничениями ресурсов**
 
