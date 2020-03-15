@@ -1,23 +1,23 @@
-[root@nginx ~]# systemctl status jira.service 
+[root@unit ~]# systemctl status jira.service 
 ● jira.service - Atlassian Jira
-   Loaded: loaded (/usr/lib/systemd/system/jira.service; disabled; vendor preset: disabled)
-   Active: active (running) since Sun 2020-03-15 11:40:02 UTC; 4s ago
-  Process: 6414 ExecStart=/opt/atlassian/jira/bin/start-jira.sh (code=exited, status=0/SUCCESS)
- Main PID: 6446 (java)
-    Tasks: 11 (limit: 15)
-   Memory: 63.5M (limit: 100.0M)
-   CGroup: /system.slice/jira.service
-           └─6446 /opt/atlassian/jira/jre//bin/java -Djava.util.logging.config.file=/opt/atlassian/jira/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Xms384...
+   Loaded: loaded (/usr/lib/systemd/system/jira.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2020-03-15 16:07:38 UTC; 31s ago
+  Process: 6203 ExecStop=/opt/atlassian/jira/bin/stop-jira.sh (code=exited, status=0/SUCCESS)
+  Process: 6321 ExecStart=/opt/atlassian/jira/bin/start-jira.sh (code=exited, status=0/SUCCESS)
+ Main PID: 6358 (java)
+    Tasks: 14 (limit: 15)
+   Memory: 95.2M (limit: 100.0M)
+   CGroup: /user.slice/user-1000.slice/jira.service
+           └─6358 /usr/bin/java -Djava.util.logging.config.file=/opt/atlassian/jira/co...
 
-Mar 15 11:40:02 nginx start-jira.sh[6414]: +MMMMM
-Mar 15 11:40:02 nginx start-jira.sh[6414]: MMMMM
-Mar 15 11:40:02 nginx start-jira.sh[6414]: `UOJ
-Mar 15 11:40:02 nginx start-jira.sh[6414]: Atlassian Jira
-Mar 15 11:40:02 nginx start-jira.sh[6414]: Version : 8.7.1
-Mar 15 11:40:02 nginx start-jira.sh[6414]: If you encounter issues starting or stopping Jira, please see the Troubleshooting guide at https://docs.atlassian.com/jira/jadm-docs-087/Trouble...g+installation
-Mar 15 11:40:02 nginx start-jira.sh[6414]: Server startup logs are located in /opt/atlassian/jira/logs/catalina.out
-Mar 15 11:40:02 nginx start-jira.sh[6414]: /opt/atlassian/jira/bin/check-java.sh: line 31: [: -ne: unary operator expected
-Mar 15 11:40:02 nginx start-jira.sh[6414]: /opt/atlassian/jira/bin/set-gc-params.sh: line 5: [: -ge: unary operator expected
-Mar 15 11:40:02 nginx systemd[1]: Started Atlassian Jira.
+Mar 15 16:07:37 unit start-jira.sh[6321]: +MMMMM
+Mar 15 16:07:37 unit start-jira.sh[6321]: MMMMM
+Mar 15 16:07:37 unit start-jira.sh[6321]: `UOJ
+Mar 15 16:07:37 unit start-jira.sh[6321]: Atlassian Jira
+Mar 15 16:07:37 unit start-jira.sh[6321]: Version : 8.7.1
+Mar 15 16:07:37 unit start-jira.sh[6321]: If you encounter issues starting or stoppi...on
+Mar 15 16:07:37 unit start-jira.sh[6321]: Server startup logs are located in /opt/at...ut
+Mar 15 16:07:38 unit start-jira.sh[6321]: /opt/atlassian/jira/bin/check-java.sh: lin...ed
+Mar 15 16:07:38 unit start-jira.sh[6321]: /opt/atlassian/jira/bin/set-gc-params.sh: ...ed
+Mar 15 16:07:38 unit systemd[1]: Started Atlassian Jira.
 Hint: Some lines were ellipsized, use -l to show in full.
-[root@nginx ~]# 
