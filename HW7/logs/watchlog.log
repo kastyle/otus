@@ -1,0 +1,4 @@
+Mar 14 16:09:25 localhost systemd: Started Run watchlog script every 30 second.
+Mar 14 16:10:15 localhost systemd: Starting My watchlog service...
+Mar 14 16:10:15 localhost root: Sat Mar 14 16:10:15 UTC 2020: I found word, Master!
+Mar 14 16:10:15 localhost systemd: Started My watchlog service.
