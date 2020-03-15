@@ -1,0 +1,4 @@
+[root@nginx ~]# ss -tnulp | grep httpd
+tcp    LISTEN     0      128      :::80                   :::*                   users:(("httpd",pid=4853,fd=4),("httpd",pid=4852,fd=4),("httpd",pid=4851,fd=4),("httpd",pid=4850,fd=4),("httpd",pid=4849,fd=4),("httpd",pid=4848,fd=4))
+tcp    LISTEN     0      128      :::8080                 :::*                   users:(("httpd",pid=4749,fd=4),("httpd",pid=4748,fd=4),("httpd",pid=4747,fd=4),("httpd",pid=4746,fd=4),("httpd",pid=4745,fd=4),("httpd",pid=4744,fd=4))
+[root@nginx ~]# 
