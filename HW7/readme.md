@@ -78,7 +78,7 @@ Unit=watchlog.service
 [Install]
 WantedBy=multi-user.target' >> /etc/systemd/system/watchlog.timer
 ```
-Запускаем и проверяем результат работы в логе №№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№
+Запускаем, результат работы [можно посмотреть в логе](https://github.com/kastyle/otus/blob/master/HW7/logs/watchlog.log)
 
 ## **3. Дополняем unit файл httpd**
 
@@ -103,7 +103,7 @@ cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/second.conf
 sed -i 's:Listen 80:Listen 8080:' /etc/httpd/conf/second.conf
 echo PidFile /var/run/httpd-second.pid >> /etc/httpd/conf/second.conf
 ```
-Проверяем статус сервисов, результат можно посмотреть в логе №№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№
+Проверяем статус сервисов, результат [можно посмотреть в логе (https://github.com/kastyle/otus/blob/master/HW7/logs/httpd.log)
 
 ## **4. Создаем unit файл для jira с ограничениями ресурсов**
 
@@ -150,7 +150,7 @@ Restart=always                                      #Авторестарт пр
 [Install] 
 WantedBy=multi-user.target' >> /lib/systemd/system/jira.service
 ```
-Остается только перечитать параметры, добавить сервис в автозагрузку, запустить его и проверить, что все ОК.
+Остается только перечитать параметры, добавить сервис в автозагрузку, запустить его и проверить, что все ОК. [ЛОГ ТУТ](https://github.com/kastyle/otus/blob/master/HW7/logs/jira.log)
 ```
 systemctl daemon-reload
 systemctl enable jira.service
