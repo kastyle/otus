@@ -150,7 +150,8 @@ Restart=always                                      #Авторестарт пр
 [Install] 
 WantedBy=multi-user.target' >> /lib/systemd/system/jira.service
 ```
-Остается только перечитать параметры, добавить сервис в автозагрузку, запустить его и проверить, что все ОК. [ЛОГ ТУТ](https://github.com/kastyle/otus/blob/master/HW7/logs/jira.log)
+Остается только перечитать параметры, добавить сервис в автозагрузку, запустить его и проверить, что все ОК. 
+[ЛОГ ТУТ](https://github.com/kastyle/otus/blob/master/HW7/logs/jira.log)
 ```
 systemctl daemon-reload
 systemctl enable jira.service
