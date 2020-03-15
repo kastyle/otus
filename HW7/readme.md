@@ -130,7 +130,7 @@ chmod -R u=rwx,go-rwx /home/jira/jirasoftware-home
 touch /lib/systemd/system/jira.service
 chmod 664 /lib/systemd/system/jira.service
 ```
-Создаем для юнит и ограничения для него, назначаем авторестарт.
+Создаем юнит и ограничения для него, назначаем авторестарт.
 ```
 echo '[Unit] 
 Description=Atlassian Jira
