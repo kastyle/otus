@@ -89,14 +89,19 @@ cp /usr/lib/systemd/system/httpd.service /etc/systemd/system/httpd@.service
 Создаем 2 когфига для httpd
 ```
 touch /etc/sysconfig/httpd-first
-echo 'OPTIONS=-f conf/first.conf'
+echo 'OPTIONS=-f conf/first.conf' >> /etc/sysconfig/httpd-first
 touch /etc/sysconfig/httpd-second
-echo 'OPTIONS=-f conf/second.conf'
+echo 'OPTIONS=-f conf/second.conf' >> /etc/sysconfig/httpd-second
 ```
 Копируем оригинальные конфиги и правим последний
 ```
 cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/first.conf
 cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/second.conf
+```
+Изменяем значения в файле
+```
+sed -i 's:Listen 80:Listen 8080:' /etc/httpd/conf/second.conf
+echo PidFile /var/run/httpd-second.pid >> /etc/httpd/conf/second.conf
 ```
 Проверяем статус сервисов, результат можно посмотреть в логе №№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№
 
@@ -104,12 +109,20 @@ cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/second.conf
 
 Устанавливаем jira
 ```
-yum install wget -y
-mkdir /opt/otus ; cd /opt/otus
-wget https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-8.7.1-x64.bin
-chmod +x atlassian-jira-software-8.7.1-x64.bin 
-./atlassian-jira-software-8.7.1-x64.bin 
-chmod 755 /opt/atlassian/jira* 
+yum install -y fontconfig java wget
+wget с --progress=bar:force https://www.atlassian.com/software/jira/downloads/binary/atlassian-servicedesk-4.7.1.tar.gz
+mkdir /opt/atlassian/
+tar -xf atlassian-servicedesk-4.7.1.tar.gz
+mv atlassian-jira-servicedesk-4.7.1-standalone/ /opt/atlassian/jira/
+```
+Создаем пользователя, назначаем права на каталоги
+```
+useradd jira
+chown -R jira /opt/atlassian/jira/
+chmod -R u=rwx,go-rwx /opt/atlassian/jira/
+mkdir /home/jira/jirasoftware-home
+chown -R jira /home/jira/jirasoftware-home
+chmod -R u=rwx,go-rwx /home/jira/jirasoftware-home
 ```
 Создаем unit файл, устанавливаем нужные права (согласно документации)
 
@@ -118,13 +131,24 @@ touch /lib/systemd/system/jira.service
 chmod 664 /lib/systemd/system/jira.service
 
 ```
-Создаем для юнита ряд ограничений, назначаем авторестарт.
+Создаем для юнит и ограничения для него, назначаем авторестарт.
 ```
-MemoryLimit=100M                          #Лимит по памяти
-TasksMax=15                               #Лимит по задачам
-CPUQuota=30%                              #Лимит использования CPU        
-IOWeight=20                               #Лимит использования диска. Уменьшили приоритет
-Restart=always                            #Авторестарт при неожиданном завершении процесса
+echo '[Unit] 
+Description=Atlassian Jira
+After=network.target
+[Service] 
+Type=forking
+User=jira
+PIDFile=/opt/atlassian/jira/work/catalina.pid
+ExecStart=/opt/atlassian/jira/bin/start-jira.sh
+ExecStop=/opt/atlassian/jira/bin/stop-jira.sh
+MemoryLimit=100M                                    #Лимит по памяти
+TasksMax=15                                         #Лимит по задачам
+CPUQuota=30%                                        #Лимит использования CPU
+Slice=user-1000.slice                               #Устанаваливаем слайс для юзера
+Restart=always                                      #Авторестарт при неожиданном завершении процесса
+[Install] 
+WantedBy=multi-user.target' >> /lib/systemd/system/jira.service
 ```
 Остается только перечитать параметры, добавить сервис в автозагрузку, запустить его и проверить, что все ОК.
 ```
@@ -133,9 +157,3 @@ systemctl enable jira.service
 systemctl start jira.service
 systemctl status jira.service
 ```
-
-
-
-
-
-
