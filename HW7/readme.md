@@ -78,6 +78,7 @@ Unit=watchlog.service
 [Install]
 WantedBy=multi-user.target' >> /etc/systemd/system/watchlog.timer
 ```
+Осталось только добавить таймер в автозагрузку конмандой systemctl enable 
 Запускаем, результат работы [можно посмотреть в логе](https://github.com/kastyle/otus/blob/master/HW7/logs/watchlog.log)
 
 ## **3. Дополняем unit файл httpd**
