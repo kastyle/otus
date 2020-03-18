@@ -36,6 +36,8 @@ OnUnitActiveSec=30
 Unit=watchlog.service
 [Install]
 WantedBy=multi-user.target' >> /etc/systemd/system/watchlog.timer
+systemctl enable watchlog.timer
+systemctl start watchlog.timer
 systemctl start watchlog.service
 tail -n 10 /var/log/messages
 echo ============================================================================
