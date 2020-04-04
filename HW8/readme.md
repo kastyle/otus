@@ -54,7 +54,7 @@ vim rpmbuild/SPECS/nginx.spec
  cat >> /etc/yum.repos.d/otus.repo << EOF
 [otus]
 name=otus-linux
-baseurl=http://35.228.112.147/repo
+baseurl=http://35.228.112.147:8080/repo
 gpgcheck=0
 enabled=1
 EOF
