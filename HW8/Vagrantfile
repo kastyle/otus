@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
            yum install mock -y -q
            usermod -a -G mock root
 # Install tools for creating your own REPO
-           #yum install nginx -y -q
+           yum install nginx -y -q
            yum install createrepo -y -q
 # HW
             adduser builder
@@ -64,7 +64,7 @@ Vagrant.configure("2") do |config|
             nginx -s reload
             echo '[otus]' > /etc/yum.repos.d/otus.repo
             echo 'name=otus-linux' >> /etc/yum.repos.d/otus.repo
-            echo 'baseurl=http://35.228.112.147/repo' >> /etc/yum.repos.d/otus.repo
+            echo 'baseurl=http://35.228.112.147/repo/' >> /etc/yum.repos.d/otus.repo
             echo 'gpgcheck=0' >> /etc/yum.repos.d/otus.repo
             echo 'enabled=1' >> /etc/yum.repos.d/otus.repo
 
@@ -72,3 +72,4 @@ Vagrant.configure("2") do |config|
 
       end
   end
+end
