@@ -15,3 +15,20 @@
 - Все действия выполнялись под **Centos 7**
 
 ## **2. Запрещаем логин пользователям**
+
+Первое, что нам нужно сделать, это добавить пользователей, задать им пароли.
+```
+[root@centos ~]# useradd admin && useradd vasya-user && useradd liza-user
+[root@centos ~]# echo "12345" | passwd --stdin admin && echo "12345" | passwd --stdin vasya-user && echo "12345" | passwd --stdin liza-user 
+```
+Далее, создаем группы. Для тестирования работы pam будет создано 2 группы: admin и myusers. 
+```
+[root@centos ~]# groupadd myusers
+[root@centos ~]# usermod -a -G myusers vasya-user && usermod -a -G myusers liza-user 
+
+```
+Чтобы быть уверенными, что на стенде разрешен вход через ssh по паролю, выполним следующую команду:
+```
+[root@centos ~]# sudo bash -c "sed -i 's/^PasswordAuthentication.*$/PasswordAuthentication yes/' /etc/ssh/sshd_config && systemctl restart sshd.service"
+
+```
