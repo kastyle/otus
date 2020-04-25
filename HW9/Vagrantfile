@@ -1,0 +1,62 @@
+# -*- mode: ruby -*-
+# vim: set ft=ruby :
+# -*- mode: ruby -*-
+# vim: set ft=ruby :
+
+MACHINES = {
+  :centos => {
+        :box_name => "centos/7",
+        :ip_addr => '192.168.11.101'
+  }
+}
+
+Vagrant.configure("2") do |config|
+
+  MACHINES.each do |boxname, boxconfig|
+
+      config.vm.define boxname do |box|
+
+          box.vm.box = boxconfig[:box_name]
+          box.vm.host_name = boxname.to_s
+
+          #box.vm.network "forwarded_port", guest: 3260, host: 3260+offset
+
+          box.vm.network "private_network", ip: boxconfig[:ip_addr]
+
+          box.vm.provider :virtualbox do |vb|
+            vb.customize ["modifyvm", :id, "--memory", "256"]
+          end
+
+          box.vm.provision "shell", inline: <<-SHELL
+#          mkdir -p ~root/.ssh
+#          cp ~vagrant/.ssh/auth* ~root/.ssh
+           yum install epel-release -y -q
+           yum install tree yum-utils mc wget gcc vim git -y -q
+           useradd admin
+	   useradd vasya-user && useradd liza-user
+	   echo "12345" | passwd --stdin admin
+	   echo "12345" | passwd --stdin vasya-user && echo "12345" | passwd --stdin liza-user
+	   groupadd myusers
+	   usermod -a -G admin admin
+	   usermod -a -G myusers vasya-user && usermod -a -G myusers liza-user
+	   sudo bash -c "sed -i 's/^PasswordAuthentication.*$/PasswordAuthentication yes/' /etc/ssh/sshd_config"
+	   systemctl restart sshd.service
+	   yum install pam_script -y
+	   sed -i '2i\ auth  required  pam_script.so'  /etc/pam.d/sshd
+	   echo '#!/bin/bash' > /etc/pam_script
+	   echo ' ' >> /etc/pam_script
+	   echo 'if [[ `grep $PAM_USER /etc/group | grep 'admin'` ]]' >> /etc/pam_script
+	   echo 'then' >> /etc/pam_script
+	   echo 'exit 0' >> /etc/pam_script
+	   echo 'fi' >> /etc/pam_script
+	   echo 'if [[ `date +%u` > 5 ]]' >> /etc/pam_script
+	   echo 'then' >> /etc/pam_script
+	   echo 'exit 1' >> /etc/pam_script
+	   echo 'fi' >> /etc/pam_script
+	   chmod +x /etc/pam_script 
+
+      SHELL
+
+      end
+  end
+end
