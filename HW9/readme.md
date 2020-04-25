@@ -61,3 +61,32 @@ fi
 ```
 Приступим к проверке.
 
+Данный readme.md пишится в субботу,поэтому, проверять еще удобнее :)
+
+Логинимся под пользоватлем admin:
+```
+[vagrant@centos ~]$ ssh admin@localhost
+The authenticity of host 'localhost (::1)' can't be established.
+ECDSA key fingerprint is SHA256:myvRZ5j0dXrNNJtG7Fs8qiKzUFosTUYyVIdUeY+TDfM.
+ECDSA key fingerprint is MD5:27:fb:12:91:5b:8c:e8:a1:d4:36:66:23:59:5a:7f:f6.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'localhost' (ECDSA) to the list of known hosts.
+admin@localhost's password: 
+[admin@centos ~]$
+```
+Все получилось, пытаемся залогиниться под простым пользоватеем:
+```
+[vagrant@centos ~]$ ssh liza-user@localhost
+liza-user@localhost's password: 
+Permission denied, please try again.
+liza-user@localhost's password: 
+```
+Как и следовало ожидать, нас не пускает. Изменим группу пользователя liza-user командой ```usermod -G "" liza-user && usermod -a -G admin liza-user```   и попробуем зайти еще раз:
+```
+[vagrant@centos ~]$ ssh liza-user@localhost
+liza-user@localhost's password: 
+Last failed login: Sat Apr 25 07:37:48 UTC 2020 from ::1 on ssh:notty
+There were 2 failed login attempts since the last successful login.
+[liza-user@centos ~]$ 
+```
+Получилось!
