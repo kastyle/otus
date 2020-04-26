@@ -121,6 +121,6 @@ ansible -i staging/hosts all -m yum -a "name=epel-release state=absent" -b
 Выполнение playbook завершилось успешно.
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s17.png)
 Проверяем хост 1:
-![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s16.png)
-Проверяем хост 2:
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s15.png)
+Проверяем хост 2:
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s16.png)
