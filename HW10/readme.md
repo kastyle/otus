@@ -48,4 +48,5 @@ ansible 2.9.7
 Используем эти парметры для создания inventory файла. Файл доступен по ссылке [ТУТ](https://github.com/kastyle/otus/blob/master/HW10/host1/staging/hosts)
 Для удобства, создадим еще один файл, ansible.cfg, он облегчит нам жизнь, так как не придется повторно вводить адрес, где лежит инвентори файл. После создания файла удаляем из файла hosts информацию о пользователе, она там больше не нужна. Посмотреть ansible.cfg можно [ЖМЯКНУВ_ТУТ](https://github.com/kastyle/otus/blob/master/HW10/host1/ansible.cfg)
 Остается проверить, работает или нет. Выполним команду: ```ansible -i staging/hosts all -m ping```
+
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s3.png)
