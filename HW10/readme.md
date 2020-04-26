@@ -19,4 +19,25 @@
 - **Ansible** - система управления конфигурациями;
 - Все действия выполнялись под **Centos 7 и Ubuntu 18.04**
 
-## **2. sdfdsfdsf**
+## **2. Ansible**
+
+На начала подготовим рабочее место: проверим есть ли питон и какая у него версия, установим ansible и создадим нужное окружение.
+```
+kastyle@admins:~$ python -V
+Python 2.7.17
+
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo apt-add-repository --yes --update ppa:ansible/ansible
+sudo apt-get install ansible
+
+kastyle@admins:~$ ansible --version
+ansible 2.9.7
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = [u'/home/kastyle/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.7/dist-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 2.7.17 (default, Apr 15 2020, 17:20:14) [GCC 7.5.0]
+  ```
+  Создаем 2 вагрантфайла, для наших 2-ух серверов. Вагрантфайлы взяты из методички, изменено только имя машин и ip адрес второй машины. Проверяем ssh соединения до каждой машины:
+![Проверка](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s2020-04-26%2012-05-35.png)
