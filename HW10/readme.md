@@ -45,7 +45,7 @@ ansible 2.9.7
 Для подключения к хосту нам необходимо передать множество параметров. Узнать их можно командой vagrant ssh-config:
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s2.png)
 
-Используем эти парметры для создания inventory файла. Файл доступен по ссылке [ТУТ](https://github.com/kastyle/otus/blob/master/HW10/host1/staging/hosts)
+Используем эти параметры для создания inventory файла. Файл доступен по ссылке [ТУТ](https://github.com/kastyle/otus/blob/master/HW10/host1/staging/hosts)
 Для удобства, создадим еще один файл, ansible.cfg, он облегчит нам жизнь, так как не придется повторно вводить адрес, где лежит инвентори файл. После создания файла удаляем из файла hosts информацию о пользователе, она там больше не нужна. Посмотреть ansible.cfg можно [ЖМЯКНУВ_ТУТ](https://github.com/kastyle/otus/blob/master/HW10/host1/ansible.cfg)
 Остается проверить, работает или нет. Выполним команду: 
 ```
@@ -56,7 +56,7 @@ ansible -i staging/hosts all -m ping
 
 Перейдем к основной части задания.
 
-Научимся пользоваться Ad-Hoc командами, и вополним некоторые из них.
+Научимся пользоваться Ad-Hoc командами, и выполним некоторые из них.
 ```
 ansible -i staging/hosts all -m command -a "uname -r"
 ```
@@ -72,7 +72,7 @@ ansible -i staging/hosts all -m yum -a "name=epel-release state=present" -b
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s7.png)
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s8.png)
 
-Далее, пишим плейбук для автоматической установки epe-release. Сам плейбук и результат его работы показан на скриншоте.
+Далее, пишем плейбук для автоматической установки epe-release. Сам плейбук и результат его работы показан на скриншоте.
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s9.png)
 Выполним команду, для сравнения выводов между playbook и ad-hoc
 ```
@@ -114,7 +114,7 @@ ansible -i staging/hosts all -m yum -a "name=epel-release state=absent" -b
 ```
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s13.png)
 
-ВОУ ВОУ СТОПЭ!!! :) На данном этапе у меня случилось восстание машин. Ни при каком раскладе nginx нехотел обновляться. Но, к счастью я еще не забанен в гугле. Хоть точного ответа на свой вопрос я не получил, но форумы навели на верную мысль,что, дело в epel-release. Не смотря на то, что он установлен, данная ошибка намекает на то, что пкет nginx ansible найти не может. Переустановка epel-release помогла, и теперь мы видим то, что и должны видеть:
+ВОУ ВОУ СТОПЭ!!! :) На данном этапе у меня случилось восстание машин. Ни при каком раскладе nginx не хотел обновляться. Но, к счастью я еще не забанен в гугле. Хоть точного ответа на свой вопрос я не получил, но форумы навели на верную мысль,что, дело в epel-release. Не смотря на то, что он установлен, данная ошибка намекает на то, что пкет nginx ansible найти не может. Переустановка epel-release помогла, и теперь мы видим то, что и должны видеть:
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s14.png)
 
 Далее,в данный файл мы добавляем шаблон конфига nginx,а так же модуль, который будет копировать шаблон на наш хост. По заданию, необходимо, что бы nginx слушал на порту 8080, изменяем этот параметр,и добавим handler и notify. Это нужно для перезагрузки сервиса в случае изменения конфига. [ЕСЛИ КЛАЦНУТЬ ТУТ](https://github.com/kastyle/otus/blob/master/HW10/host1/nginx.yml), откроется окончательная версия файла nginx.yml, готовая к выполнению.
@@ -149,3 +149,5 @@ ansible -i staging/hosts all -m yum -a "name=epel-release state=absent" -b
 4. Когда vagrant поднялся, выполнить один из 2-ух playbook'ов.
   ansible-playbook nginx_role.yml - для роли
   ansible-playbook nginx_full.yml - стандартный playbook.
+5. http://192.168.11.150:8080/
+6. http://192.168.11.151:8080/
