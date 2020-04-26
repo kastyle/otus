@@ -124,3 +124,28 @@ ansible -i staging/hosts all -m yum -a "name=epel-release state=absent" -b
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s15.png)
 Проверяем хост 2:
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s16.png)
+
+## **3.Роли**
+
+Создадим роль. Для этого используется команда ```ansible-galaxy init nginx```
+А дальше там просто требуется попилить ранее созданный playbook по разделам. handlers в handlers, tasks в tasks и так далее по списку. Конечная версия playbook'a для роли выгляди так:
+```
+ 
+---
+- name: NGINX | Install and configure NGINX
+  hosts: all
+  become: true
+
+  roles:
+    - nginx
+```
+Проверяем работоспособность роли:
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s18.png)
+
+## **4.Что бы все проверить, нужно...**
+1. Загрузить репозиторий.
+2. Перейти в /HW10/host1/nginx1/ и сделать vagrant up
+3. Перейти другой каталог выполнив cd ../nginx2 и сделать vagrant up
+4. Когда vagrant поднялся, выполнить один из 2-ух playbook'ов.
+  ansible-playbook nginx_role.yml - для роли
+  ansible-playbook nginx_full.yml - стандартный playbook.
