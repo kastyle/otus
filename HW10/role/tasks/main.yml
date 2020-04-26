@@ -1,4 +1,5 @@
-    - name: NGINX | Install EPEL Repo package from standart repo
+---
+- name: NGINX | Install EPEL Repo package from standart repo
       yum:
         name: epel-release
         state: present
