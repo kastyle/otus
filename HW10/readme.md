@@ -79,3 +79,36 @@ ansible -i staging/hosts all -m yum -a "name=epel-release state=present" -b
 ansible -i staging/hosts all -m yum -a "name=epel-release state=absent" -b
 ```
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s10.png)
+
+Создадим файл nginx.yml, допишем его и приведем к следующему виду:
+```
+---
+- name: NGINX | Install and configure NGINX
+  hosts: all
+  become: true
+  
+  tasks:
+    - name: NGINX | Install EPEL Repo package from standart repo
+      yum:
+        name: epel-release
+        state: present
+      tags:
+        - epel-package
+        - packages
+
+    - name: NGINX | Install NGINX package from EPEL Repo
+      yum:
+        name: nginx
+        state: latest
+      tags:
+        - nginx-package
+        - packages
+```
+Теперь, так как мы добавили tags мы имеем возможность выводить теги в консоль и выполнять,например, только установку nginx. Выведем теги в консоль и произведем обновление nginx.
+Теги:
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s12.png)
+Обновление nginx:
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s13.png)
+
+ВОУ ВОУ СТОПЭ!!! :) На данном этапе у меня случилось восстание машин. Ни при каком раскладе nginx нехотел обновляться. Но, к счастью я еще не забанен в гугле. Хоть точного ответа на свой вопрос я не получил, но форумы навели на верную мысль,что, дело в epel-release. Не смотря на то, что он установлен, данная ошибка намекает на то, что пкет nginx ansible найти не может. Переустановка epel-release помогла, и теперь мы видим то, что и должны видеть:
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s14.png)
