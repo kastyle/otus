@@ -118,3 +118,9 @@ ansible -i staging/hosts all -m yum -a "name=epel-release state=absent" -b
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s14.png)
 
 Далее,в данный файл мы добавляем шаблон конфига nginx,а так же модуль, который будет копировать шаблон на наш хост. По заданию, необходимо, что бы nginx слушал на порту 8080, изменяем этот параметр,и добавим handler и notify. Это нужно для перезагрузки сервиса в случае изменения конфига. [ЕСЛИ КЛАЦНУТЬ ТУТ](https://github.com/kastyle/otus/blob/master/HW10/host1/nginx.yml), откроется окончательная версия файла nginx.yml, готовая к выполнению.
+Выполнение playbook завершилось успешно.
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s15.png)
+Проверяем хост 1:
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s16.png)
+Проверяем хост 2:
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s17.png)
