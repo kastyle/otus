@@ -40,4 +40,7 @@ ansible 2.9.7
   python version = 2.7.17 (default, Apr 15 2020, 17:20:14) [GCC 7.5.0]
   ```
   Создаем 2 вагрантфайла, для наших 2-ух серверов. Вагрантфайлы взяты из методички, изменено только имя машин и ip адрес второй машины. Проверяем ssh соединения до каждой машины:
-![Проверка](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s2020-04-26%2012-05-35.png)
+![ ](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s2020-04-26%2012-05-35.png)
+
+Для подключения к хосту нам необходимо передать множество параметров. Узнать их можно командой vagrant ssh-config:
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s2.png)
