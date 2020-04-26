@@ -53,3 +53,21 @@ ansible -i staging/hosts all -m ping
 ```
 
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s3.png)
+
+Перейдем к основной части задания.
+
+Научимся пользоваться Ad-Hoc командами, и вополним некоторые из них.
+```
+ansible -i staging/hosts all -m command -a "uname -r"
+```
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s4.png)
+```
+ansible -i staging/hosts all -m systemd -a name=firewalld
+```
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s5.png)
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s6.png)
+```
+ansible -i staging/hosts all -m yum -a "name=epel-release state=present" -b
+```
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s7.png)
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s8.png)
