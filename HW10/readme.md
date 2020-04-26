@@ -71,3 +71,11 @@ ansible -i staging/hosts all -m yum -a "name=epel-release state=present" -b
 ```
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s7.png)
 ![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s8.png)
+
+Далее, пишим плейбук для автоматической установки epe-release. Сам плейбук и результат его работы показан на скриншоте.
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s9.png)
+Выполним команду, для сравнения выводов между playbook и ad-hoc
+```
+ansible -i staging/hosts all -m yum -a "name=epel-release state=absent" -b
+```
+![](https://github.com/kastyle/otus/raw/master/HW10/screenshots/s10.png)
