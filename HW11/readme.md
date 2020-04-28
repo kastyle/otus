@@ -49,4 +49,22 @@ CMD - команда, которую нужно выполнить, когда �
 
 ![](https://github.com/kastyle/otus/raw/master/HW11/screenshots/s2.png)
 
+Теперь осталось только собрать контейнер и запустить его. Погнали.
+Сборка происодит командой:
+```
+docker build -t CONTAINER_NAME .
+```
+Теперь можно запускать контейнер.
+```
+docker run -d -p 8080:8080 CONTAINER_NAME
+```
+Проверяем, работает ли он. 
+![](https://github.com/kastyle/otus/raw/master/HW11/screenshots/s3.png)
 
+Да, все в порядке. Пушим образ в docker hub.
+```
+docker tag 469547603661 kastyle/myhw:release
+docker push kastyle/myhw
+```
+Загрузка прошла успешно.
+![](https://github.com/kastyle/otus/raw/master/HW11/screenshots/s4.png)
