@@ -83,10 +83,10 @@ docker push kastyle/myhw
 ## **4. Для проверки нужно...**
 
 Загрузить репо, выполнить:
-
+```
 docker build -t CONTAINER_NAME .
 docker run -d -p 8080:8080 CONTAINER_NAME
-
+```
 Где, CONTAINER_NAME - произвольное имя контейнера.
 Открыть браузер, убедиться, что все работает, контейнер загружен.
 
