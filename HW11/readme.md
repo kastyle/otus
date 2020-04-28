@@ -87,5 +87,6 @@ docker build -t CONTAINER_NAME .
 docker run -d -p 8080:8080 CONTAINER_NAME
 Где, CONTAINER_NAME - произвольное имя контейнера.
 
-Открыть браузер, убедиться, что все работает.
+Открыть браузер, убедиться, что все работает, контейнер загружен.
 http://127.0.0.1:8080/
+https://hub.docker.com/r/kastyle/myhw
