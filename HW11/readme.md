@@ -62,6 +62,7 @@ docker run -d -p 8080:8080 CONTAINER_NAME
 ![](https://github.com/kastyle/otus/raw/master/HW11/screenshots/s3.png)
 
 Заглянем в браузер:
+
 ![](https://github.com/kastyle/otus/raw/master/HW11/screenshots/s5.png)
 
 Да, все в порядке. Пушим образ в docker hub.
