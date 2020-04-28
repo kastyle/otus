@@ -19,3 +19,19 @@
 - Все действия выполнялись под **Ubuntu 18.04**
 
 ## **2. Docker**
+
+Для начала требуется установить docker. Выполним последовательно команды:
+```
+sudo apt-get install     apt-transport-https     ca-certificates     curl     gnupg-agent     software-properties-common
+ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo apt-key fingerprint 0EBFCD88
+sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+```
+Что бы каждый раз не воодить sudo, добавим пользователя, из под которого идет работа в группу docker
+```
+sudo usermod -a -G docker kastyle
+```
+Проверим, как там дела у докера и если все ок, начнем создавать докерфайл.
+![](https://github.com/kastyle/otus/raw/master/HW11/screenshots/s1.png)
