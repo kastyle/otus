@@ -100,4 +100,4 @@ docker run -d -p 8080:8080 CONTAINER_NAME
 
 http://127.0.0.1:8080/
 
-https://hub.docker.com/r/kastyle/myhw
+https://hub.docker.com/r/kastyle/myhw-upd
