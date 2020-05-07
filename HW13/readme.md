@@ -62,10 +62,14 @@ $template RemoteLogs,"/var/log/rsyslog/%HOSTNAME%/%PROGRAMNAME%.log"
 systemctl restart rsyslog.service 
 ```
 
+Настройка клиента.
 
+Настраиваем отправку логов на сервер. Созддадим файл в /etc/rsyslog.d/ с именем crit.conf
 
-
-
+```
+*.crit @@192.168.11.101:514
+```
+Все критические логи будут отправлены по данному ip адресу. После, рестартим rsyslog.
 
 
 
