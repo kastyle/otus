@@ -71,5 +71,37 @@ systemctl restart rsyslog.service
 ```
 Все критические логи будут отправлены по данному ip адресу. После, рестартим rsyslog.
 
+Установим nginx и настроим отправку логов. Добавим файл nginx.repo в /etc/yum.repos.d/
+```
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+gpgcheck=0
+enabled=1
+```
+```
+yum install nginx
+systemctl start nginx
+systemctl enable nginx
+```
+Изменим конфиг nginx, что бы он мог отправлять логи на наш сервер:
+
+```
+error_log syslog:server=192.168.11.101:514,tag=nginx_error;
+error_log  /var/log/nginx/error.log crit;
+access_log syslog:server=192.168.11.101:514,facility=local6,tag=nginx_access,severity=info main;
+```
+Выполним ```nginx -t ``` что бы проверить правильность синтаксиса, и если все ок ```systemctl restart nginx```
+
+Настроим аудит.
+Установим плагин отвечающий за отправку логов на сервер.
+```
+yum install audispd-plugins.x86_64 
+```
+
+
+
+
+
 
 
