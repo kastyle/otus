@@ -43,7 +43,24 @@ yum install policycoreutils-python
 semanage port -m -t syslogd_port_t -p tcp 514
 semanage port -m -t syslogd_port_t -p udp 514
 ```
+Разрешаем соединения по tcp/udp на 514 порту и добавляем шаблон для создания логов. Изменим файл /etc/rsyslog.conf:
+```
+# Provides UDP syslog reception
+$ModLoad imudp
+$UDPServerRun 514
 
+# Provides TCP syslog reception
+$ModLoad imtcp
+$InputTCPServerRun 514
+
+$template RemoteLogs,"/var/log/rsyslog/%HOSTNAME%/%PROGRAMNAME%.log"
+*.* ?RemoteLogs
+& ~
+```
+Перезапускаем сервис:
+```
+systemctl restart rsyslog.service 
+```
 
 
 
