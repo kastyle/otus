@@ -96,10 +96,27 @@ access_log syslog:server=192.168.11.101:514,facility=local6,tag=nginx_access,sev
 Настроим аудит.
 Установим плагин отвечающий за отправку логов на сервер.
 ```
-yum install audispd-plugins.x86_64 
+yum install -y audispd-plugins.x86_64 
 ```
+Включаем отправку логов
 
-
+```
+sed -i 's!active = no!active = yes!' /etc/audisp/plugins.d/au-remote.conf
+```
+Прописываем адрес отправки логов на сервер
+```
+sed -i 's!remote_server =!remote_server = 192.168.11.101!' /etc/audisp/audisp-remote.conf
+```
+Перезапускаем сервис
+```
+systemctl daemon-reload
+service auditd restart
+```
+На лог машине так же настроим принятие пакетов на 60 порту.
+```
+sed -i 's!##tcp_listen_port = 60!tcp_listen_port = 60!' /etc/audit/auditd.conf
+service auditd restart
+```
 
 
 
