@@ -1,0 +1,60 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+
+           config.vm.define "web" do |web|
+                web.vm.box = "centos/7"
+                web.vm.host_name = "web"
+                web.vm.network "private_network", ip: '192.168.11.100'
+                web.vm.provider :virtualbox do |vb|
+                vb.customize ["modifyvm", :id, "--memory", "256"]
+                end
+                web.vm.provision "shell", inline: <<SHELL
+		sudo su
+		cp /vagrant/nginx.repo /etc/yum.repos.d/nginx.repo
+		yum upgrade
+		yum install -y nginx
+                yum install -y epel-release
+		yum install -y audispd-plugins.x86_64
+		systemctl start nginx
+		cp /vagrant/crit.conf /etc/rsyslog.d/crit.conf
+		systemctl restart rsyslog
+		cp /vagrant/nginx.conf /etc/nginx/nginx.conf
+		nginx -t
+		systemctl restart nginx
+		cp /vagrant/au-remote.conf /etc/audisp/plugins.d/au-remote.conf
+		cp /vagrant/audisp-remote.conf /etc/audisp/audisp-remote.conf
+		cp /vagrant/audit.rules /etc/audit/rules.d/audit.rules 
+		systemctl daemon-reload
+		service auditd restart
+SHELL
+		
+           end
+
+           config.vm.define "log" do |log|
+                log.vm.box = "centos/7"
+                log.vm.host_name = "log"
+                log.vm.network "private_network", ip: '192.168.11.101'
+                log.vm.provider :virtualbox do |vb|
+                        vb.customize ["modifyvm", :id, "--memory", "256"]
+                end
+                log.vm.provision "shell", inline: <<SHELL
+		sudo su
+		yum install -y epel-release
+		yum install -y policycoreutils-python
+		#yum upgrade
+		systemctl start firewalld.service
+		systemctl enable firewalld.service
+		firewall-cmd --permanent --add-port=514/{tcp,udp}
+		firewall-cmd --permanent --add-port=60/{tcp,udp}
+		firewall-cmd --reload
+		semanage port -m -t syslogd_port_t -p tcp 514
+		semanage port -m -t syslogd_port_t -p udp 514
+		sed -i 's!SELINUX=enforcing!SELINUX=disabled!' /etc/sysconfig/selinux
+		cp /vagrant/rsyslog.conf /etc/rsyslog.conf 
+		systemctl restart rsyslog
+		cp /vagrant/auditd.conf /etc/audit/auditd.conf
+		service auditd restart
+SHELL
+           end
+end
