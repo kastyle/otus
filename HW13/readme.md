@@ -70,7 +70,7 @@ systemctl enable nginx
 ```
 yum install -y audispd-plugins.x86_64
 ```
-Настраиваем отправку логов на сервер. Созддадим файл в /etc/rsyslog.d/ с именем crit.conf
+Настраиваем отправку логов на сервер. Создадим файл в /etc/rsyslog.d/ с именем crit.conf
 
 ```
 *.crit @@192.168.11.101:514
