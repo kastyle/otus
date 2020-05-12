@@ -107,3 +107,6 @@ systemctl daemon-reload
 service auditd restart
 ```
 Получилось!
+
+***Проверить:
+Скопировать все в один каталог и запустить vagrantfile***
