@@ -19,29 +19,15 @@
 
 ## **2. rsyslog**
 
-Первое, что сделаем - поправим вермя, дату и часовой пояс на поднятых серверах.
-```
-yum install chrony
-systemctl enable chronyd
-systemctl start chronyd
-\cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
-```
+**Настройка VM log**
 
-Включим брандмауэр и откроем порты для работы rsyslog
+Включим брандмауэр и откроем порты для работы rsyslog и audit
 ```
 systemctl start firewalld.service
 systemctl enable firewalld.service
-systemctl status firewalld.service
 firewall-cmd --permanent --add-port=514/{tcp,udp}
+firewall-cmd --permanent --add-port=60/{tcp,udp}
 firewall-cmd --reload
-```
-
-Так как SElinux работает, требуется настроить и его.
-
-```
-yum install policycoreutils-python
-semanage port -m -t syslogd_port_t -p tcp 514
-semanage port -m -t syslogd_port_t -p udp 514
 ```
 Разрешаем соединения по tcp/udp на 514 порту и добавляем шаблон для создания логов. Изменим файл /etc/rsyslog.conf:
 ```
@@ -61,15 +47,11 @@ $template RemoteLogs,"/var/log/rsyslog/%HOSTNAME%/%PROGRAMNAME%.log"
 ```
 systemctl restart rsyslog.service 
 ```
+Настроим сервер на прием логов на 60 порту. Раскомментируем строчку tcp_listen_port = 60 в файле /etc/audit/auditd.conf перезапустим сервис командой ```service auditd restart```
 
-Настройка клиента.
 
-Настраиваем отправку логов на сервер. Созддадим файл в /etc/rsyslog.d/ с именем crit.conf
 
-```
-*.crit @@192.168.11.101:514
-```
-Все критические логи будут отправлены по данному ip адресу. После, рестартим rsyslog.
+**Настройка VM web**
 
 Установим nginx и настроим отправку логов. Добавим файл nginx.repo в /etc/yum.repos.d/
 ```
@@ -84,6 +66,18 @@ yum install nginx
 systemctl start nginx
 systemctl enable nginx
 ```
+Установим плагин для отправки логов на сервер
+```
+yum install -y audispd-plugins.x86_64
+```
+Настраиваем отправку логов на сервер. Созддадим файл в /etc/rsyslog.d/ с именем crit.conf
+
+```
+*.crit @@192.168.11.101:514
+```
+Все критические логи будут отправлены по данному ip адресу. После, рестартим rsyslog.
+
+```
 Изменим конфиг nginx, что бы он мог отправлять логи на наш сервер:
 
 ```
@@ -93,10 +87,6 @@ access_log syslog:server=192.168.11.101:514,facility=local6,tag=nginx_access,sev
 ```
 Выполним ```nginx -t ``` что бы проверить правильность синтаксиса, и если все ок ```systemctl restart nginx```
 
-Настроим аудит.
-Установим плагин отвечающий за отправку логов на сервер.
-```
-yum install -y audispd-plugins.x86_64 
 ```
 Включаем отправку логов
 
@@ -107,18 +97,13 @@ sed -i 's!active = no!active = yes!' /etc/audisp/plugins.d/au-remote.conf
 ```
 sed -i 's!remote_server =!remote_server = 192.168.11.101!' /etc/audisp/audisp-remote.conf
 ```
+Добавим правило для аудита
+```
+echo '-w /etc/nginx/ -p wa -k nginx_watch' >> /etc/audit/rules.d/audit.rules 
+```
 Перезапускаем сервис
 ```
 systemctl daemon-reload
 service auditd restart
 ```
-На лог машине так же настроим принятие пакетов на 60 порту.
-```
-sed -i 's!##tcp_listen_port = 60!tcp_listen_port = 60!' /etc/audit/auditd.conf
-service auditd restart
-```
-
-
-
-
-
+Получилось!
